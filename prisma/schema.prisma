@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  phone         String?
+  password      String?   // For credentials provider
+  isVerified    Boolean   @default(false)
+  dob           DateTime?
+  pan           String?
+  aadhaar       String?
+  address       String?
+  bio           String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  
+  // AIKYA specific relations
+  fundraisers   Fundraiser[]
+  contributions Contribution[]
+  
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// AIKYA specific models
+model Fundraiser {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  goal        Float
+  raised      Float    @default(0)
+  category    String
+  imageUrl    String?
+  trustScore  Int      @default(75)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId       String
+  user         User           @relation(fields: [userId], references: [id])
+  contributions Contribution[]
+
+  @@map("fundraisers")
+}
+
+model Contribution {
+  id           String     @id @default(cuid())
+  amount       Float
+  message      String?
+  isAnonymous  Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+
+  userId       String
+  fundraiserId String
+  user         User       @relation(fields: [userId], references: [id])
+  fundraiser   Fundraiser @relation(fields: [fundraiserId], references: [id])
+
+  @@map("contributions")
+}
