@@ -91,6 +91,26 @@ model Fundraiser {
   user         User           @relation(fields: [userId], references: [id])
   contributions Contribution[]
 
+  // Extended fields for start fundraiser form
+  organizer           String?
+  story               String?
+  supportingDocType   String?
+  aadhaarNumber       String?
+  panNumber           String?
+  goalAmount          Float?
+  location            String?
+  isUrgent           Boolean  @default(false)
+  isVerified         Boolean  @default(false)
+  donors             Int      @default(0)
+  daysLeft           Int      @default(30)
+  
+  // File paths (stored as strings since we can't store actual files in SQLite)
+  idImagePath         String?
+  selfieImagePath     String?
+  supportingDocPath   String?
+  aadhaarDocPath      String?
+  panDocPath          String?
+
   @@map("fundraisers")
 }
 

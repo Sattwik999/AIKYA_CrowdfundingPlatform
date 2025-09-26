@@ -28,7 +28,7 @@ export function Header() {
   const isLoading = status === "loading"
 
   return (
-    <header className="relative flex items-center justify-between px-4 py-4 md:px-6 lg:px-8 bg-gradient-to-r from-blue-50 via-cyan-50 to-teal-50 backdrop-blur-sm border-b border-cyan-100/50 shadow-sm">
+    <header className="relative flex items-center justify-between px-4 py-2 md:px-6 lg:px-8 bg-gradient-to-r from-blue-50 via-cyan-50 to-teal-50 backdrop-blur-sm border-b border-cyan-100/50 shadow-sm">
       {/* Background Animation */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/8 via-cyan-500/8 to-teal-500/8 animate-pulse"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-200/12 to-transparent animate-shimmer"></div>
@@ -157,13 +157,18 @@ export function Header() {
         )}
 
         {/* Enhanced Start a Fundraiser Button */}
-        <Button className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group">
-          <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <div className="relative flex items-center gap-2">
-            <Plus className="h-4 w-4 group-hover:rotate-90 transition-transform duration-300" />
-            <span>Start Fundraiser</span>
-            <Sparkles className="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
-          </div>
+        <Button 
+          asChild
+          className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+        >
+          <Link href="/start-fundraiser">
+            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative flex items-center gap-2">
+              <Plus className="h-4 w-4 group-hover:rotate-90 transition-transform duration-300" />
+              <span>Start Fundraiser</span>
+              <Sparkles className="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+          </Link>
         </Button>
         <Sheet>
           <SheetTrigger asChild>
@@ -255,13 +260,18 @@ export function Header() {
               )}
               
               {/* Enhanced Mobile Start Fundraiser Button */}
-              <Button className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg mt-4 group">
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative flex items-center justify-center gap-2">
-                  <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
-                  <span>Start a Fundraiser</span>
-                  <Sparkles className="h-5 w-5 opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+              <Button 
+                asChild
+                className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg mt-4 group"
+              >
+                <Link href="/start-fundraiser">
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative flex items-center justify-center gap-2">
+                    <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+                    <span>Start a Fundraiser</span>
+                    <Sparkles className="h-5 w-5 opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                </Link>
               </Button>
             </div>
           </SheetContent>

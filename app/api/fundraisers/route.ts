@@ -75,23 +75,45 @@ export async function GET(request: NextRequest) {
     })
 
     // Transform data to match the frontend format
-    const transformedFundraisers = fundraisers.map(fundraiser => ({
-      id: fundraiser.id,
-      title: fundraiser.title,
-      description: fundraiser.description,
-      image: fundraiser.imageUrl || "/placeholder.jpg",
-      raised: fundraiser.raised,
-      goal: fundraiser.goal,
-      daysLeft: Math.max(0, Math.floor((new Date().getTime() - fundraiser.createdAt.getTime()) / (1000 * 60 * 60 * 24)) + 30), // Assuming 30 day campaigns
-      type: "Individual" as const,
-      category: fundraiser.category,
-      trustScore: fundraiser.trustScore,
-      donors: fundraiser.contributions.length,
-      isUrgent: fundraiser.goal - fundraiser.raised > fundraiser.goal * 0.8,
-      isVerified: fundraiser.user.isVerified,
-      location: "India", // Default location
-      organizer: fundraiser.user.name || "Anonymous"
-    }))
+    const transformedFundraisers = fundraisers.map(fundraiser => {
+      // Type assertion to access the new fields
+      const fullFundraiser = fundraiser as any
+      
+      return {
+        id: fundraiser.id,
+        title: fundraiser.title,
+        description: fundraiser.description,
+        image: fundraiser.imageUrl || "/placeholder.jpg",
+        raised: fundraiser.raised,
+        goal: fundraiser.goal,
+        daysLeft: fullFundraiser.daysLeft || Math.max(0, 30 - Math.floor((new Date().getTime() - fundraiser.createdAt.getTime()) / (1000 * 60 * 60 * 24))),
+        type: "Individual" as const,
+        category: fundraiser.category,
+        trustScore: fundraiser.trustScore,
+        donors: fullFundraiser.donors || fundraiser.contributions.length,
+        isUrgent: fullFundraiser.isUrgent || (fullFundraiser.daysLeft && fullFundraiser.daysLeft <= 15),
+        isVerified: fullFundraiser.isVerified || fundraiser.user.isVerified,
+        location: fullFundraiser.location || "India",
+        organizer: fullFundraiser.organizer || fundraiser.user.name || "Anonymous",
+        
+        // Additional fields from form submission
+        story: fullFundraiser.story,
+        supportingDocType: fullFundraiser.supportingDocType,
+        aadhaarNumber: fullFundraiser.aadhaarNumber,
+        panNumber: fullFundraiser.panNumber,
+        verified: fullFundraiser.isVerified,
+        urgent: fullFundraiser.isUrgent,
+        
+        // File paths for verification
+        verificationFiles: {
+          idImage: fullFundraiser.idImagePath,
+          selfie: fullFundraiser.selfieImagePath,
+          supportingDoc: fullFundraiser.supportingDocPath,
+          aadhaarDoc: fullFundraiser.aadhaarDocPath,
+          panDoc: fullFundraiser.panDocPath
+        }
+      }
+    })
 
     return NextResponse.json(transformedFundraisers)
   } catch (error) {
