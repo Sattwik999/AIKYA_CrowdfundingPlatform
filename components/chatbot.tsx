@@ -298,16 +298,16 @@ export function Chatbot() {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-lg bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 hover:from-blue-600 hover:via-cyan-600 hover:to-teal-600 transition-all duration-300 hover:scale-110 z-50"
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-12 h-12 md:w-16 md:h-16 rounded-full shadow-lg bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 hover:from-blue-600 hover:via-cyan-600 hover:to-teal-600 transition-all duration-300 hover:scale-110 z-50"
           size="lg"
         >
-          <MessageCircle className="w-8 h-8 text-white" />
+          <MessageCircle className="w-6 h-6 md:w-8 md:h-8 text-white" />
         </Button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-96 h-[500px] shadow-2xl z-50 bg-white/95 backdrop-blur-sm border border-blue-200/50 flex flex-col">
+        <Card className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[calc(100vw-2rem)] max-w-sm md:w-96 h-[calc(100vh-6rem)] max-h-[500px] md:h-[500px] shadow-2xl z-50 bg-white/95 backdrop-blur-sm border border-blue-200/50 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500 text-white rounded-t-lg flex-shrink-0">
             <div className="flex items-center gap-3">
